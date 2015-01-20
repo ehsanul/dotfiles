@@ -1,0 +1,9 @@
+set go+=mT
+
+map k <Down>
+map i <Up>
+map j <Left>
+map -builtin h i
+
+nmap <C-l> gt
+nmap <C-j> gT

@@ -1,0 +1,232 @@
+filetype off
+" call pathogen#infect()
+
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+
+" let Vundle manage Vundle
+" required!
+Bundle 'gmarik/vundle'
+Bundle 'kien/ctrlp.vim'
+Bundle 'Valloric/YouCompleteMe'
+Bundle 'scrooloose/syntastic'
+Bundle 'nathanaelkane/vim-indent-guides'
+Bundle 'tpope/vim-fugitive'
+Bundle 'scrooloose/nerdcommenter'
+
+" TODO replace with: Bundle 'powerline/powerline'
+Bundle 'Lokaltog/vim-powerline'
+
+Bundle 'wting/rust.vim'
+Bundle 'kchmck/vim-coffee-script'
+
+filetype plugin indent on
+
+
+" http://stevelosh.com/blog/2010/09/coming-home-to-vim/
+set encoding=utf-8
+set scrolloff=3
+set autoindent
+set showmode
+set showcmd
+set hidden
+set visualbell
+set nocursorline
+set ttyfast
+set ruler
+"set undofile
+
+let mapleader = ","
+nnoremap / /\v
+vnoremap / /\v
+set ignorecase
+set smartcase
+set gdefault
+set incsearch
+set showmatch
+set hlsearch
+nnoremap <leader><space> :noh<cr>
+nnoremap <tab> %
+vnoremap <tab> %
+
+set wrap
+set textwidth=79
+set formatoptions=qrn1
+"set colorcolumn=85
+
+inoremap <F1> <ESC>
+nnoremap <F1> <ESC>
+vnoremap <F1> <ESC>
+
+nnoremap ; :
+
+" This saves when vim loses focus. Disabling because I want to :w specifically
+" just when I want my browser to livereload my changes, not when I just cmd-1
+" over to my browser without saving
+"au FocusLost * :wa
+
+inoremap jj <ESC>
+
+" http://vimcasts.org/episodes/show-invisibles/
+" Shortcut to rapidly toggle `set list`
+nmap <leader>l :set list!<CR>
+"set listchars=tab:▸\ ,eol:¬"TODO: fix this if possible
+" Invisible character colors
+highlight NonText guifg=#4a4a59
+highlight SpecialKey guifg=#4a4a59
+
+
+set expandtab
+set tabstop=2
+set shiftwidth=2
+
+set autoindent
+
+" remap h to i and use ijkl for inverse T cursor movement
+"map h <insert>
+"map i <Up>
+"map j <Left>
+"map k <Down>
+map k g<Down>
+map i g<Up>
+map j <Left>
+noremap h i
+set wildmenu
+
+set number
+set backspace=indent,eol,start
+" enable syntax by default, ensure we're using a meaningful scheme
+syn on
+
+
+" F2 to toggle paste mode + visual feedback
+nnoremap <F2> :set invpaste paste?<CR>
+imap <F2> <C-O><F2>
+set pastetoggle=<F2>
+
+" Bash-like file auto-complete
+set wildmenu
+set wildmode=list:longest
+
+" Save and restore folds
+"au BufWinLeave * mkview
+"au BufWinEnter * silent loadview
+
+" self explanatory
+"let coffee_compile_on_save = 1
+
+" I think this results in saving automatically
+"let g:refresh_browser = 1
+"nmap <F3> :let g:refresh_browser = !g:refresh_browser<CR>
+
+" Indent Guides - From SO question
+"hi IndentGuide ctermbg=DarkGray
+"match IndentGuide /\%(\_^\s*\)\@<=\%(\%3v\|\%7v\|\%11v\)\s/
+
+" http://evalwhen.com/scmindent/index.html
+autocmd filetype lisp,scheme,art setlocal equalprg=lispindent.lisp
+
+autocmd BufRead *.scm,*.lsp,*.lisp so ~/.vim/VIlisp.vim
+
+set nobackup
+set nosmartindent
+
+" http://vim.wikia.com/wiki/Fix_syntax_highlighting
+syntax sync minlines=300
+
+"" sudo write
+ca w!! w !sudo tee >/dev/null "%"
+
+" ack.vim
+" let g:ackprg="ack -H --nocolor --nogroup --column"
+let g:ackprg = 'ag --nogroup --nocolor --column'
+cabbrev ag Ack
+
+" easy tab navigation
+nmap <C-l> gt
+nmap <C-j> gT
+
+" nerdtree
+nmap <leader>nt :NERDTree<CR>
+
+" http://stackoverflow.com/a/1625850/127219
+set backupdir=~/.vim/tmp,.
+set directory=~/.vim/tmp,.
+
+" previous statusline
+"set statusline+=%#warningmsg#
+"set statusline+=%{SyntasticStatuslineFlag()}
+"set statusline+=%*
+
+" new statusline
+set laststatus=2
+" Broken down into easily includeable segments
+set statusline=%<%f\    " Filename
+set statusline+=%w%h%m%r " Options
+set statusline+=%{fugitive#statusline()} "  Git Hotness
+set statusline+=\ [%{&ff}/%Y]            " filetype
+set statusline+=\ [%{getcwd()}]          " current dir
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+let g:syntastic_enable_signs=1
+set statusline+=%=%-14.(%l,%c%V%)\ %p%%  " Right aligned file nav info
+
+command gbl Gblame 
+
+"https://github.com/altercation/vim-colors-solarized/
+"set background=dark
+"colorscheme solarized
+"colorscheme default
+set background=dark
+colorscheme vividchalk
+
+hi IndentGuidesOdd  guibg=#222222 ctermbg=darkgrey
+hi IndentGuidesEven guibg=black ctermbg=black
+let g:indent_guides_auto_colors = 0
+autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd ctermbg=234
+autocmd VimEnter,Colorscheme * :hi IndentGuidesEven ctermbg=NONE
+let g:indent_guides_start_level=2
+let g:indent_guides_guide_size=1
+let g:indent_guides_enable_on_vim_startup = 1
+
+nmap <silent> <A-i> :wincmd k<CR>
+nmap <silent> <A-k> :wincmd j<CR>
+nmap <silent> <A-j> :wincmd h<CR>
+nmap <silent> <A-l> :wincmd l<CR>
+
+
+"" Here's the vimclojure stuff. You'll need to adjust the NailgunClient
+" setting if you're on windows or have other problems.
+let vimclojure#FuzzyIndent=1
+let vimclojure#HighlightBuiltins=1
+let vimclojure#HighlightContrib=1
+let vimclojure#DynamicHighlighting=1
+let vimclojure#ParenRainbow=1
+let vimclojure#WantNailgun = 1
+let vimclojure#NailgunClient = $HOME . "/.vim/vimclojure-easy/lib/vimclojure-nailgun-client/ng"
+
+" Paredit
+let g:paredit_mode = 0
+
+let g:syntastic_ruby_exec = '/Users/harish/.rvm/rubies/ruby-2.0.0-p195/bin/ruby'
+
+" map command-p to ctrl-p
+if has("gui_macvim")
+  "macmenu File.Print key=<nop> " i had to actually comment the binding out in menu.vim, this didn't work
+  nmap <D-p> <C-p>
+endif
+
+
+" this makes ctrlp awesome
+let g:ctrlp_cmd = 'CtrlPMixed'
+
+" use silver searcher with ctrlp
+let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+"let g:ctrlp_user_command = 'ag -l --nocolor %s' this doesn't work :(
+
+let g:ctrlp_prompt_mappings = {
+    \ 'AcceptSelection("t")': ['<cr>', '<c-t>'],
+    \ 'AcceptSelection("e")': ['<c-cr>', '<2-LeftMouse>'],
+    \ 'AcceptSelection("h")': ['<c-x>', '<c-s>'],
+    \ }

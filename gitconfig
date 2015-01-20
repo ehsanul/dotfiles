@@ -1,0 +1,28 @@
+[user]
+    name = Ehsanul Hoque
+    email = ehsanul@ehsanul.com
+
+[alias]
+    cm = commit
+    cmm = commit -m
+    cmv = commit --verbose
+    co = checkout
+    cb = checkout -b
+    st = status
+    praise = blame
+
+[apply]
+    whitespace = strip
+
+[diff]
+    color = auto
+    rename = copy
+
+[pager]
+    color = true
+
+[status]
+    color = auto
+
+[push]
+    default = simple
