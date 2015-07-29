@@ -1,27 +1,31 @@
 filetype off
 " call pathogen#infect()
 
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
 
 " let Vundle manage Vundle
 " required!
-Bundle 'gmarik/vundle'
-Bundle 'kien/ctrlp.vim'
-Bundle 'Valloric/YouCompleteMe'
-Bundle 'scrooloose/syntastic'
-Bundle 'nathanaelkane/vim-indent-guides'
-Bundle 'tpope/vim-fugitive'
-Bundle 'scrooloose/nerdcommenter'
+Plugin 'gmarik/vundle'
+Plugin 'kien/ctrlp.vim'
+Plugin 'Valloric/YouCompleteMe'
+Plugin 'scrooloose/syntastic'
+Plugin 'nathanaelkane/vim-indent-guides'
+Plugin 'tpope/vim-fugitive'
+Plugin 'scrooloose/nerdcommenter'
+Plugin 'tpope/vim-vividchalk'
 
-" TODO replace with: Bundle 'powerline/powerline'
-Bundle 'Lokaltog/vim-powerline'
+" TODO replace with: Plugin 'powerline/powerline'
+Plugin 'Lokaltog/vim-powerline'
 
-Bundle 'wting/rust.vim'
-Bundle 'kchmck/vim-coffee-script'
+Plugin 'wting/rust.vim'
+Plugin 'kchmck/vim-coffee-script'
+call vundle#end()
 
 filetype plugin indent on
 
+" use built-in matchit.vim
+runtime! macros/matchit.vim
 
 " http://stevelosh.com/blog/2010/09/coming-home-to-vim/
 set encoding=utf-8
@@ -172,7 +176,7 @@ set statusline+=%*
 let g:syntastic_enable_signs=1
 set statusline+=%=%-14.(%l,%c%V%)\ %p%%  " Right aligned file nav info
 
-command gbl Gblame 
+nmap <leader>g :Gblame<CR>
 
 "https://github.com/altercation/vim-colors-solarized/
 "set background=dark
