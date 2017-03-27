@@ -8,12 +8,20 @@ call vundle#begin()
 " required!
 Plugin 'gmarik/vundle'
 Plugin 'kien/ctrlp.vim'
+Plugin 'JazzCore/ctrlp-cmatcher'
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'scrooloose/syntastic'
 Plugin 'nathanaelkane/vim-indent-guides'
 Plugin 'tpope/vim-fugitive'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'tpope/vim-vividchalk'
+Plugin 'tpope/vim-endwise'
+Plugin 'terryma/vim-multiple-cursors'
+
+Plugin 'leafgarland/typescript-vim'
+Plugin 'Shougo/vimproc.vim'
+Plugin 'Quramy/tsuquyomi'
+Plugin 'Quramy/vim-js-pretty-template'
 
 " TODO replace with: Plugin 'powerline/powerline'
 Plugin 'Lokaltog/vim-powerline'
@@ -68,8 +76,6 @@ nnoremap ; :
 " just when I want my browser to livereload my changes, not when I just cmd-1
 " over to my browser without saving
 "au FocusLost * :wa
-
-inoremap jj <ESC>
 
 " http://vimcasts.org/episodes/show-invisibles/
 " Shortcut to rapidly toggle `set list`
@@ -200,6 +206,20 @@ nmap <silent> <A-j> :wincmd h<CR>
 nmap <silent> <A-l> :wincmd l<CR>
 
 
+" map paste, delete and yank to named register so the content will not be overwritten
+nnoremap p "xp
+vnoremap p "xp
+nnoremap P "xP
+vnoremap P "xP
+nnoremap y "xy
+vnoremap y "xy
+nnoremap Y "xY
+vnoremap Y "xY
+nnoremap d "xd
+vnoremap d "xd
+nnoremap D "xD
+vnoremap D "xD
+
 "" Here's the vimclojure stuff. You'll need to adjust the NailgunClient
 " setting if you're on windows or have other problems.
 let vimclojure#FuzzyIndent=1
@@ -225,6 +245,9 @@ endif
 " this makes ctrlp awesome
 let g:ctrlp_cmd = 'CtrlPMixed'
 
+" JazzCore/ctrlp-cmatcher
+let g:ctrlp_match_func = {'match' : 'matcher#cmatch' }
+
 " use silver searcher with ctrlp
 let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 "let g:ctrlp_user_command = 'ag -l --nocolor %s' this doesn't work :(
@@ -234,3 +257,24 @@ let g:ctrlp_prompt_mappings = {
     \ 'AcceptSelection("e")': ['<c-cr>', '<2-LeftMouse>'],
     \ 'AcceptSelection("h")': ['<c-x>', '<c-s>'],
     \ }
+
+autocmd FileType typescript JsPreTmpl markdown
+autocmd FileType typescript syn clear foldBraces " For leafgarland/typescript-vim users only. Please see #1 for details.
+
+" make parent directories automatically on file save
+" http://stackoverflow.com/a/4294176/127219
+function s:MkNonExDir(file, buf)
+    if empty(getbufvar(a:buf, '&buftype')) && a:file!~#'\v^\w+\:\/'
+        let dir=fnamemodify(a:file, ':h')
+        if !isdirectory(dir)
+            call mkdir(dir, 'p')
+        endif
+    endif
+endfunction
+augroup BWCCreateDir
+    autocmd!
+    autocmd BufWritePre * :call s:MkNonExDir(expand('<afile>'), +expand('<abuf>'))
+augroup END
+
+let g:tsuquyomi_disable_quickfix = 1
+let g:syntastic_typescript_checkers = ['tsuquyomi']
