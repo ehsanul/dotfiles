@@ -3,8 +3,8 @@ function parse_git_branch_and_add_brackets(){
     git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e s/"* "/" "/
 }
 
-funcion docker_log_grep(){
-  docker ps | grep mytime-web | cut -d' ' -f1 | xargs -n1 docker logs 2>/dev/null | grep '${1}'
+function docker_log_grep(){
+  docker ps | grep mytime-web | cut -d' ' -f1 | xargs -n1 docker logs 2>/dev/null | grep $1
 }
 
 function linerate(){
