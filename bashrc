@@ -84,3 +84,40 @@ fi
 #fi
 
 export LANG=C
+
+eval "$(rbenv init -)"
+
+export ANDROID_HOME=/usr/local/opt/android-sdk
+
+[ -s "$HOME/.scm_breeze/scm_breeze.sh" ] && source "$HOME/.scm_breeze/scm_breeze.sh"
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+
+[ -r "$HOME/.smartcd_config" ] && ( [ -n $BASH_VERSION ] || [ -n $ZSH_VERSION ] ) && source ~/.smartcd_config
+function x(){ smartcd cd $@; } # `smartcd setup cd` not working, doesn't work to make "cd" the function name either here
+
+export GOPATH="$HOME/.go"
+export PATH=$PATH:$GOPATH/bin
+
+export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
+
+# bazel
+export PATH="$PATH:$HOME/bin"
+
+# cuda
+export PATH=/Developer/NVIDIA/CUDA-7.5/bin:$PATH
+export DYLD_LIBRARY_PATH=/Developer/NVIDIA/CUDA-7.5/lib:$DYLD_LIBRARY_PATH
+
+# cocoapods
+export LANG=en_US.UTF-8
+
+# rustup/cargo
+export PATH="$HOME/.cargo/bin:$PATH"
+export RUSTC_WRAPPER=sccache
+
+# this helps with ssh forwarding, but kind of slows down new terminals. bring
+# it back if required.
+# ssh-add
+# ssh-agent
