@@ -7,20 +7,22 @@ call vundle#begin()
 " let Vundle manage Vundle
 " required!
 Plugin 'gmarik/vundle'
-Plugin 'kien/ctrlp.vim'
+
+"Plugin 'Valloric/YouCompleteMe'
+Plugin 'zxqfl/tabnine-vim' " this is a fork of YouCompleteMe
+
+Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'JazzCore/ctrlp-cmatcher'
-Plugin 'Valloric/YouCompleteMe'
-Plugin 'scrooloose/syntastic'
 Plugin 'nathanaelkane/vim-indent-guides'
 Plugin 'tpope/vim-fugitive'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'tpope/vim-vividchalk'
 Plugin 'tpope/vim-endwise'
 Plugin 'terryma/vim-multiple-cursors'
+Plugin 'simnalamburt/vim-mundo'
 
 Plugin 'leafgarland/typescript-vim'
 Plugin 'Shougo/vimproc.vim'
-Plugin 'Quramy/tsuquyomi'
 Plugin 'Quramy/vim-js-pretty-template'
 
 " TODO replace with: Plugin 'powerline/powerline'
@@ -28,6 +30,15 @@ Plugin 'Lokaltog/vim-powerline'
 
 Plugin 'wting/rust.vim'
 Plugin 'kchmck/vim-coffee-script'
+
+Plugin 'hashivim/vim-terraform'
+Plugin 'posva/vim-vue'
+Plugin 'digitaltoad/vim-pug'
+
+"Plugin 'scrooloose/syntastic'
+"Plugin 'Quramy/tsuquyomi'
+Plugin 'w0rp/ale'
+
 call vundle#end()
 
 filetype plugin indent on
@@ -84,7 +95,6 @@ nmap <leader>l :set list!<CR>
 " Invisible character colors
 highlight NonText guifg=#4a4a59
 highlight SpecialKey guifg=#4a4a59
-
 
 set expandtab
 set tabstop=2
@@ -163,6 +173,19 @@ nmap <leader>nt :NERDTree<CR>
 set backupdir=~/.vim/tmp,.
 set directory=~/.vim/tmp,.
 
+function! LinterStatus() abort
+  let l:counts = ale#statusline#Count(bufnr(''))
+
+  let l:all_errors = l:counts.error + l:counts.style_error
+  let l:all_non_errors = l:counts.total - l:all_errors
+
+  return l:counts.total == 0 ? 'OK' : printf(
+  \   '%dW %dE',
+  \   all_non_errors,
+  \   all_errors
+  \)
+endfunction
+
 " previous statusline
 "set statusline+=%#warningmsg#
 "set statusline+=%{SyntasticStatuslineFlag()}
@@ -177,9 +200,12 @@ set statusline+=%{fugitive#statusline()} "  Git Hotness
 set statusline+=\ [%{&ff}/%Y]            " filetype
 set statusline+=\ [%{getcwd()}]          " current dir
 set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
+
+"set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%{LinterStatus()}
+
 set statusline+=%*
-let g:syntastic_enable_signs=1
+"let g:syntastic_enable_signs=1
 set statusline+=%=%-14.(%l,%c%V%)\ %p%%  " Right aligned file nav info
 
 nmap <leader>g :Gblame<CR>
@@ -233,14 +259,13 @@ let vimclojure#NailgunClient = $HOME . "/.vim/vimclojure-easy/lib/vimclojure-nai
 " Paredit
 let g:paredit_mode = 0
 
-let g:syntastic_ruby_exec = '/Users/harish/.rvm/rubies/ruby-2.0.0-p195/bin/ruby'
-
 " map command-p to ctrl-p
 if has("gui_macvim")
   "macmenu File.Print key=<nop> " i had to actually comment the binding out in menu.vim, this didn't work
   nmap <D-p> <C-p>
 endif
 
+set runtimepath^=~/.vim/bundle/ctrlp.vim
 
 " this makes ctrlp awesome
 let g:ctrlp_cmd = 'CtrlPMixed'
@@ -276,5 +301,11 @@ augroup BWCCreateDir
     autocmd BufWritePre * :call s:MkNonExDir(expand('<afile>'), +expand('<abuf>'))
 augroup END
 
-let g:tsuquyomi_disable_quickfix = 1
-let g:syntastic_typescript_checkers = ['tsuquyomi']
+" navigate to next error in ale
+nmap <silent> <C-k> <Plug>(ale_next_wrap)
+
+" use more recent ruby version, not system ruby:
+let g:ale_ruby_ruby_executable='/Users/mytime/.rbenv/versions/2.3.1-railsexpress/bin/ruby'
+
+"let g:tsuquyomi_disable_quickfix = 1
+"let g:syntastic_typescript_checkers = ['tsuquyomi']
