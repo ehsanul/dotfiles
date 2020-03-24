@@ -90,6 +90,9 @@ eval "$(rbenv init -)"
 export ANDROID_HOME=/usr/local/opt/android-sdk
 
 [ -s "$HOME/.scm_breeze/scm_breeze.sh" ] && source "$HOME/.scm_breeze/scm_breeze.sh"
+
+
+export FZF_DEFAULT_COMMAND='rg --files'
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
 export NVM_DIR="$HOME/.nvm"
@@ -117,7 +120,10 @@ export LANG=en_US.UTF-8
 export PATH="$HOME/.cargo/bin:$PATH"
 export RUSTC_WRAPPER=sccache
 
-# this helps with ssh forwarding, but kind of slows down new terminals. bring
-# it back if required.
-# ssh-add
-# ssh-agent
+# this helps with ssh forwarding
+ssh-add
+ssh-agent
+
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+export PATH="$HOME/Library/Python/3.7/bin":$PATH
