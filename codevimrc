@@ -64,8 +64,11 @@ set ruler
 "set undofile
 
 let mapleader = ","
-nnoremap / /\v
-vnoremap / /\v
+
+# https://github.com/VSCodeVim/Vim/issues/3996
+#nnoremap / /\v # very magic is the default in vscode vim
+#vnoremap / /\v # very magic is the default in vscode vim
+
 set ignorecase
 set smartcase
 set gdefault
