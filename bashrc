@@ -48,6 +48,8 @@ fi
 
 unset color_prompt force_color_prompt
 
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
 # Alias definitions.
 # You may want to put all your additions into a separate file like
 # ~/.bash_aliases, instead of adding them here directly.
@@ -72,7 +74,7 @@ fi
 #PS1="\h-\w:) "
 PS1="\w\[\033[0;32m\]\$(parse_git_branch_and_add_brackets)\[\033[0m\]:) "
 
-export ARCHFLAGS="-arch i386 -arch x86_64"
+#export ARCHFLAGS="-arch i386 -arch x86_64"
 
 if [ -s "$HOME/.scm_breeze/scm_breeze.sh" ]; then
   source "$HOME/.scm_breeze/scm_breeze.sh"
@@ -85,7 +87,7 @@ fi
 
 export LANG=C
 
-eval "$(rbenv init -)"
+# eval "$(rbenv init -)"
 
 export ANDROID_HOME=/usr/local/opt/android-sdk
 
@@ -127,3 +129,18 @@ ssh-agent
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 export PATH="$HOME/Library/Python/3.7/bin":$PATH
+
+export github='{"username": "ehsanul", "accessToken": "'$(forge auth github)'"}'
+
+export PATH="$HOME/.jenv/bin:$PATH"
+eval "$(jenv init -)"
+export PATH="$HOME/.nodenv/bin:$PATH"
+eval "$(nodenv init -)"
+
+export GOPATH="$HOME/go"
+export PATH="$GOPATH/bin:$PATH"
+export PYENV_ROOT="$HOME/.pyenv"
+command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
+export PATH=/Users/ehsanhoque/.local/bin:$PATH
